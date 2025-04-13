@@ -11,13 +11,21 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "tb_equipamento")
 public class Equipamento {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    //@JoinColumn(name = "cliente_id")
     private String hostname;
+
+    @ManyToOne
     private String ipProducao;
+
+    @ManyToOne
     private String ipIdrac;
     private String serial;
     private String patrimonio;
@@ -43,4 +51,22 @@ public class Equipamento {
     private Date dataAtivacao;
     private Date dataInicioGarantia;
     private Date dataFimGarantia;
+
+    public Equipamento(Long id, String hostname, String ipProducao, String ipIdrac, String serial, String patrimonio, String processador, String memoria, String hd, Integer nucleos, TipoServico tipoServico, StatusEquipamento statusEquipamento, Cliente cliente, Localizacao localizacao) {
+        this.id = id;
+        this.hostname = hostname;
+        this.ipProducao = ipProducao;
+        this.ipIdrac = ipIdrac;
+        this.serial = serial;
+        this.patrimonio = patrimonio;
+        this.processador = processador;
+        this.memoria = memoria;
+        this.hd = hd;
+        this.nucleos = nucleos;
+        this.tipoServico = tipoServico;
+        this.statusEquipamento = statusEquipamento;
+        this.cliente = cliente;
+        this.localizacao = localizacao;
+    }
 }
+

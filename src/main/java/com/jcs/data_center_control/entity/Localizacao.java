@@ -1,9 +1,6 @@
 package com.jcs.data_center_control.entity;
 
-import com.jcs.data_center_control.enums.DataCenter;
-import com.jcs.data_center_control.enums.Fila;
-import com.jcs.data_center_control.enums.LocalEquipamento;
-import com.jcs.data_center_control.enums.Sala;
+import com.jcs.data_center_control.enums.*;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +8,9 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+//@JoinColumn(name = "localizacao_id")
 public class Localizacao {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -27,5 +26,14 @@ public class Localizacao {
 
     @Enumerated(EnumType.STRING)
     private Fila fila;
+
+    @Enumerated(EnumType.STRING)
+    private Bastidor bastidor;
+
+    @Enumerated(EnumType.STRING)
+    private Nivel nivel;
+
+    @Enumerated(EnumType.STRING)
+    private StatusLocal statusLocal;
 }
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
@@ -13,23 +14,21 @@ import java.util.UUID;
 @Setter
 @Getter
 @Entity
-@Table(name = "TB_CLIENTE")
+@Table (name = "TB_CLIENTE")
 public class Cliente implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID id;
+    private Long id;
 
-    @Column(nullable = false, unique = false)
+    @Column(nullable = false, unique = true)
     private String nome;
-
+                
     private String cnpj;
 
-    @JsonProperty (access = JsonProperty.Access.WRITE_ONLY)
-    @OneToMany (mappedBy = "cliente", fetch = FetchType.LAZY)
-    //private List<Equipamento> equipamentos;
-    private Set<Equipamento> equipamentos = new HashSet<>();
-
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    private List<Equipamento> equipamentos;
 
 }

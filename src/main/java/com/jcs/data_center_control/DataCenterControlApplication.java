@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DataCenterControlApplication {
 
 	public static void main(String[] args) {
+
 		SpringApplication.run(DataCenterControlApplication.class, args);
 	}
 

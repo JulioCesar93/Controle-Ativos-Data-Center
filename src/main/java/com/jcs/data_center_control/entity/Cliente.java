@@ -6,14 +6,12 @@ import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.UUID;
 
 @Setter
 @Getter
 @Entity
+@Builder
 @Table (name = "TB_CLIENTE")
 public class Cliente implements Serializable {
     @Serial
@@ -23,9 +21,10 @@ public class Cliente implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "nome")
     private String nome;
-                
+
+    @Column(name = "cnpj", nullable = false, unique = true)
     private String cnpj;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)

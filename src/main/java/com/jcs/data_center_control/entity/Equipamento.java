@@ -8,13 +8,11 @@ import lombok.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
 
 @Setter
 @Getter
 @Entity
+@Builder
 @Table(name = "TB_EQUIPAMENTO")
 public class Equipamento implements Serializable {
     @Serial
@@ -57,4 +55,3 @@ public class Equipamento implements Serializable {
     private String Observacoes;
 
 }
-

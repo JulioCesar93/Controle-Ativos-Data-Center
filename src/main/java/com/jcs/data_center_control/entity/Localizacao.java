@@ -6,7 +6,6 @@ import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.UUID;
 
 @Setter
 @Getter
@@ -17,7 +16,9 @@ public class Localizacao implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "equipamento_id")
     private Equipamento equipamento;
@@ -44,4 +45,3 @@ public class Localizacao implements Serializable {
     private StatusLocal statusLocal;
 
 }
-

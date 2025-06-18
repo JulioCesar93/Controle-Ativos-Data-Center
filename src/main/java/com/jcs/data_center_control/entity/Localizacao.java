@@ -10,6 +10,7 @@ import java.io.Serializable;
 @Setter
 @Getter
 @Entity
+@Builder
 @Table(name = "TB_LOCALIZACAO")
 public class Localizacao implements Serializable {
     @Serial
@@ -17,7 +18,7 @@ public class Localizacao implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "equipamento_id")

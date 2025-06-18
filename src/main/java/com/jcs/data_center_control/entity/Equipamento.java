@@ -20,7 +20,7 @@ public class Equipamento implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
 
     //@OneToOne(cascade = CascadeType.ALL)
     //@JoinColumn(name = "localizacao_id")

@@ -23,9 +23,26 @@ public class EquipamentoService {
         );
     }
 
-    public void deletarEquipamentoPorSerial(String serial){
+    public void deletarEquipamentoPorSerial(String serial) {
         repository.deleteBySerial(serial);
     }
+
+    public void deletarEquipamentoPorId(Integer id) {
+        Equipamento equipamento = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Equipamento não encontrado com ID: " + id));
+        repository.delete(equipamento);
+    }
+
+    public void deletarEquipamentoPorObjeto(Equipamento equipamento) {
+        if (equipamento.getId() != null) {
+            deletarEquipamentoPorId(equipamento.getId());
+        } else if (equipamento.getSerial() != null) {
+            deletarEquipamentoPorSerial(equipamento.getSerial());
+        } else {
+            throw new RuntimeException("É necessário informar 'id' ou 'serial' para exclusão.");
+        }
+    }
+
 
     public void atualizarEquipamentoPorId(Integer id, Equipamento equipamento){
         Equipamento equipamentoEntity = repository.findById(id).orElseThrow(() ->

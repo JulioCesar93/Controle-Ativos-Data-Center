@@ -2,7 +2,7 @@ package com.jcs.data_center_control.enums;
 
 import lombok.Getter;
 
-@Getter //ANALISAR USABILIDADE
+@Getter
 public enum TipoServico {
 
     HOST_DEDICADO(0, "Host Dedicado"),
@@ -36,6 +36,6 @@ public enum TipoServico {
             }
         }
 
-        throw new IllegalArgumentException("Serviço inválido: " + cod);
+        throw new IllegalArgumentException("Serviço invalido: " + cod);
     }
 }

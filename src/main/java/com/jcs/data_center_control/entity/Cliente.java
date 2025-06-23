@@ -12,6 +12,8 @@ import java.util.List;
 @Getter
 @Entity
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table (name = "TB_CLIENTE")
 public class Cliente implements Serializable {
     @Serial
@@ -24,7 +26,7 @@ public class Cliente implements Serializable {
     @Column(name = "nome")
     private String nome;
 
-    @Column(name = "cnpj", nullable = false, unique = true)
+    @Column(name = "cnpj", unique = true)
     private String cnpj;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)

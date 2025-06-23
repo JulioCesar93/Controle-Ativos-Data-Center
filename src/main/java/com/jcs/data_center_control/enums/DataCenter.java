@@ -1,5 +1,8 @@
 package com.jcs.data_center_control.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum DataCenter {
 
     DC_238(0, "DC 238"),
@@ -12,14 +15,6 @@ public enum DataCenter {
     private DataCenter(Integer codigo, String descricao) {
         this.codigo = codigo;
         this.descricao = descricao;
-    }
-
-    public Integer getCodigo() {
-        return codigo;
-    }
-
-    public String getDescricao() {
-        return descricao;
     }
 
     public static DataCenter toEnum(Integer cod) {

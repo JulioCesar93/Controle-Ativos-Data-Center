@@ -1,5 +1,8 @@
 package com.jcs.data_center_control.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Sala {
 
     CENTRAL_TC(0, "Central TC"),
@@ -15,14 +18,6 @@ public enum Sala {
     private Sala(Integer codigo, String descricao) {
         this.codigo = codigo;
         this.descricao = descricao;
-    }
-
-    public Integer getCodigo() {
-        return codigo;
-    }
-
-    public String getDescricao() {
-        return descricao;
     }
 
     public static Sala toEnum(Integer cod) {

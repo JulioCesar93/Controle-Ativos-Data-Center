@@ -1,10 +1,10 @@
 package com.jcs.data_center_control.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum StatusEquipamento {
 
-    ROLE_USER(0, "ROLE_USER"),
-    ROLE_OPERATOR(1, "ROLE_OPERATOR"),
-    ROLE_ADMIN(2, "ROLE_ADMIN"),
     EM_OPERACAO(3, "EM OPERAÇÃO"),
     IMPLANTACAO(4, "IMPLANTAÇÃO"),
     DESLIGADO(5, "DESLIGADO"),
@@ -21,7 +21,6 @@ public enum StatusEquipamento {
     public Integer getCodigo() {
         return codigo;
     }
-
     public String getDescricao() {
         return descricao;
     }

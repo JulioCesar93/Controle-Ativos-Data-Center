@@ -1,5 +1,8 @@
 package com.jcs.data_center_control.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum StatusLocal {
 
     VAZIO(0, "Vazio"),
@@ -15,14 +18,6 @@ public enum StatusLocal {
     private StatusLocal(Integer codigo, String descricao) {
         this.codigo = codigo;
         this.descricao = descricao;
-    }
-
-    public Integer getCodigo() {
-        return codigo;
-    }
-
-    public String getDescricao() {
-        return descricao;
     }
 
     public static StatusLocal toEnum(Integer cod) {

@@ -13,6 +13,8 @@ import java.util.Date;
 @Getter
 @Entity
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "TB_EQUIPAMENTO")
 public class Equipamento implements Serializable {
     @Serial
@@ -26,7 +28,7 @@ public class Equipamento implements Serializable {
     //@JoinColumn(name = "localizacao_id")
     //private Localizacao localizacao;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 

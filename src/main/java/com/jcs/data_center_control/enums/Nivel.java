@@ -1,5 +1,8 @@
 package com.jcs.data_center_control.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum Nivel {
 
     NIVEL_01(0, "Nível 01"),

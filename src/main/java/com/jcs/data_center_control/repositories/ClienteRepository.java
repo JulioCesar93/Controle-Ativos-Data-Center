@@ -9,7 +9,10 @@ import java.util.Optional;
 public interface ClienteRepository extends JpaRepository <Cliente, Integer> {
 
     Optional<Cliente> findByCnpj(String cnpj);
+    Optional<Object> findByNome(String nome);
 
     @Transactional
     void deleteByCnpj(String cnpj);
+
+
 }

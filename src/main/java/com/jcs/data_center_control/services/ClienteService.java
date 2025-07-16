@@ -27,8 +27,23 @@ public class ClienteService {
         repository.deleteByCnpj(cnpj);
     }
 
-    public void atualizarClientePorId(Integer id, Cliente cliente){
+    public void atualizarClientePorIdeNome(Integer id, Cliente cliente){
         Cliente clienteEntity = repository.findById(id).orElseThrow(() ->
+                new RuntimeException("Cliente não encontrado"));
+
+        Cliente clienteAtualizado = Cliente.builder()
+                .cnpj(cliente.getCnpj() != null ? cliente.getCnpj() :
+                        clienteEntity.getCnpj())
+                .nome(cliente.getNome() != null ? cliente.getNome() :
+                        clienteEntity.getNome())
+                .id(clienteEntity.getId())
+                .build();
+
+        repository.saveAndFlush(clienteAtualizado);
+    }
+
+    public void atualizarClientePorNome(String nome, Cliente cliente){
+        Cliente clienteEntity = (Cliente) repository.findByNome(nome).orElseThrow(() ->
                 new RuntimeException("Cliente não encontrado"));
 
         Cliente clienteAtualizado = Cliente.builder()

@@ -30,10 +30,10 @@ public class ClienteController {
             return ResponseEntity.ok().build();
         }
 
-        @PutMapping
-        public ResponseEntity<Void> atualizarClientePorId(@RequestParam Integer id,
-                                                          @RequestBody Cliente cliente) {
-            clienteService.atualizarClientePorId(id, cliente);
-            return ResponseEntity.ok().build();
-        }
+        @PutMapping(params = "nome")
+        public ResponseEntity<Void> atualizarClientePorNome(@RequestParam String nome,
+                                                        @RequestBody Cliente cliente) {
+        clienteService.atualizarClientePorNome(nome, cliente);
+        return ResponseEntity.ok().build();
     }
+}

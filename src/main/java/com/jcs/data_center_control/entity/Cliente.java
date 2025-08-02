@@ -23,10 +23,10 @@ public class Cliente implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "nome")
+    @Column(name = "nome", unique = true, nullable = false)
     private String nome;
 
-    @Column(name = "cnpj", unique = true)
+    @Column(name = "cnpj", unique = true, nullable = false)
     private String cnpj;
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)

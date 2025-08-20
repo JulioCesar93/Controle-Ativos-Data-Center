@@ -1,6 +1,5 @@
 package com.jcs.data_center_control.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -7,7 +7,8 @@ import java.util.Optional;
 
 public interface EquipamentoRepository extends JpaRepository <Equipamento, Integer> {
 
-    void deleteBySerial(String serial);
-
-    Optional<Equipamento> findBySerial(String serial);
+    Optional<Equipamento> findByHostname(String hostname);
+    Optional<Equipamento> findBySerialTag(String serialTag);
+        void deleteByHostname(String hostname);
+        void deleteBySerialTag(String serialTag);
 }

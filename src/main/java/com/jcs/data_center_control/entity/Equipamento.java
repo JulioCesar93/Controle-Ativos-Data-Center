@@ -4,6 +4,7 @@ import com.jcs.data_center_control.enums.StatusEquipamento;
 import com.jcs.data_center_control.enums.TipoServico;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -32,12 +33,14 @@ public class Equipamento implements Serializable {
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "hostname", nullable = false)
     private String hostname;
+
+    @Column(name = "serialTag", unique = true, nullable = false)
+    private String serialTag;
 
     private String ipProducao;
     private String ipIdrac;
-    private String serial;
     private String patrimonio;
     private String processador;
     private String memoria;
@@ -50,7 +53,10 @@ public class Equipamento implements Serializable {
     @Enumerated(EnumType.STRING)
     private StatusEquipamento statusEquipamento;
 
+    @DateTimeFormat
     private Date dataAtivacao;
+
+    private String forncedorGarantia;
     private Date dataInicioGarantia;
     private Date dataFimGarantia;
 

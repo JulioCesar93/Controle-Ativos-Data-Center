@@ -40,7 +40,7 @@ public class ClienteController {
 
     // ========== DELETE ==========
     //DELETE por cnpj
-    @DeleteMapping
+    @DeleteMapping(params = "cnpj")
     public ResponseEntity<Void> deletarClientePorCnpj(@RequestParam String cnpj) {
         clienteService.deletarClientePorCnpj(cnpj);
         return ResponseEntity.ok().build();

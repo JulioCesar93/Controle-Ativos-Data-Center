@@ -1,5 +1,6 @@
 package com.jcs.data_center_control.controller;
 
+import com.jcs.data_center_control.DTO.ClienteDTO;
 import com.jcs.data_center_control.entity.Cliente;
 import com.jcs.data_center_control.services.ClienteService;
 import lombok.RequiredArgsConstructor;
@@ -20,24 +21,24 @@ public class ClienteController {
     }
 
     // ========== BUSCA ==========
-    //BUSCA cnpj
+    //BUSCA Cliente via cnpj
     @GetMapping(params = "cnpj")
-    public ResponseEntity<Cliente> buscarClientePorCnpj(@RequestParam String cnpj) {
+    public ResponseEntity<ClienteDTO> buscarClientePorCnpj(@RequestParam String cnpj) {
         return ResponseEntity.ok(clienteService.buscarClientePorCnpj(cnpj));
     }
 
-    //BUSCA id
+    //BUSCA Cliente via id
     @GetMapping(params = "id")
-    public ResponseEntity<Cliente> buscarClientePorId(@RequestParam Integer id) {
+    public ResponseEntity<ClienteDTO> buscarClientePorId(@RequestParam Integer id) {
         return ResponseEntity.ok(clienteService.buscarClientePorId(id));
     }
 
-    //BUSCA nome
+    //BUSCA Cliente via nome
     @GetMapping(params = "nome")
-    public ResponseEntity<Cliente> buscarClientePorNome(@RequestParam String nome) {
+    public ResponseEntity<ClienteDTO> buscarClientePorNome(@RequestParam String nome) {
         return ResponseEntity.ok(clienteService.buscarClientePorNome(nome));
     }
-
+    
     // ========== DELETE ==========
     //DELETE por cnpj
     @DeleteMapping(params = "cnpj")

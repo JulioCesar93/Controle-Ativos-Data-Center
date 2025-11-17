@@ -1,10 +1,12 @@
 package com.jcs.data_center_control.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -12,7 +14,7 @@ import java.util.List;
 @Entity
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+//@NoArgsConstructor
 @Table (name = "TB_CLIENTE")
 public class Cliente implements Serializable {
     @Serial
@@ -28,7 +30,21 @@ public class Cliente implements Serializable {
     @Column(name = "cnpj", unique = true, nullable = false)
     private String cnpj;
 
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-    private List<Equipamento> equipamentos;
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Equipamento> equipamentos = new ArrayList<>();
 
+    public Cliente() {
+    }
+
+    public void addEquipamento(Equipamento equipamento) {
+        equipamentos.add(equipamento);
+        equipamento.setCliente(this);
+    }
+
+    public void removeEquipamento(Equipamento equipamento) {
+        equipamentos.remove(equipamento);
+        equipamento.setCliente(null);
+    }
 }
+

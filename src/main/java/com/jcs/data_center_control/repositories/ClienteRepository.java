@@ -17,4 +17,11 @@ public interface ClienteRepository extends JpaRepository <Cliente, Integer> {
 
     @Transactional
     void deleteByCnpj(String cnpj);
+
+    @Query("SELECT c FROM Cliente c LEFT JOIN FETCH c.equipamentos WHERE c.cnpj = :cnpj")
+    Optional<Cliente> findByCnpjFetch(@Param("cnpj") String cnpj);
+
+    @Query("SELECT c FROM Cliente c LEFT JOIN FETCH c.equipamentos WHERE c.nome = :nome")
+    Optional<Cliente> findByNomeFetch(@Param("nome") String nome);
+
 }

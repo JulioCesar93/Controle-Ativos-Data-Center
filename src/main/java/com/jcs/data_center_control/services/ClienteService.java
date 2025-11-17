@@ -1,6 +1,9 @@
 package com.jcs.data_center_control.services;
 
+import com.jcs.data_center_control.DTO.ClienteDTO;
+import com.jcs.data_center_control.DTO.EquipamentoDTO;
 import com.jcs.data_center_control.entity.Cliente;
+import com.jcs.data_center_control.entity.Equipamento;
 import com.jcs.data_center_control.exceptions.ResourceNotFoundException;
 import com.jcs.data_center_control.repositories.ClienteRepository;
 import org.springframework.stereotype.Service;
@@ -8,68 +11,83 @@ import org.springframework.stereotype.Service;
 @Service
 public class ClienteService {
 
-    private final ClienteRepository repository;
+    private final ClienteRepository clienteRepository;
 
-    public ClienteService(ClienteRepository repository) {
-        this.repository = repository;
+    public ClienteService(ClienteRepository clienteRepository) {
+        this.clienteRepository = clienteRepository;
+    }
+
+    // ================= CONVERSORES =================
+
+    private ClienteDTO toDTO(Cliente cliente) {
+        ClienteDTO dto = new ClienteDTO();
+        dto.setId(cliente.getId());
+        dto.setNome(cliente.getNome());
+        dto.setCnpj(cliente.getCnpj());
+
+        // dto.setEquipamentos
+        return dto;
     }
 
     // ========== POST (Salvar) ==========
     public void salvarCliente(Cliente cliente) {
-        if (repository.findByCnpj(cliente.getCnpj()).isPresent()) {
+        if (clienteRepository.findByCnpj(cliente.getCnpj()).isPresent()) {
             throw new RuntimeException("CNPJ já cadastrado");
         }
-        if (repository.findByNome(cliente.getNome()).isPresent()) {
+        if (clienteRepository.findByNome(cliente.getNome()).isPresent()) {
             throw new RuntimeException("Nome já cadastrado");
         }
 
-        repository.saveAndFlush(cliente);
+        clienteRepository.saveAndFlush(cliente);
+    }
+    // ========== BUSCAS ========================================
+
+    public ClienteDTO buscarClientePorNome(String nome) {
+        Cliente cliente = clienteRepository.findByNome(nome)
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente " + nome + " não encontrado"));
+        return toDTO(cliente);
     }
 
-    //BUSCA - CNPJ
-    public Cliente buscarClientePorCnpj(String cnpj){
-        return repository.findByCnpj(cnpj).orElseThrow(
-                () -> new RuntimeException("CNPJ não encontrado")
-        );
+    public ClienteDTO buscarClientePorCnpj(String cnpj) {
+        Cliente cliente = clienteRepository.findByCnpj(cnpj)
+                .orElseThrow(() -> new ResourceNotFoundException("CNPJ não encontrado"));
+        return toDTO(cliente);
     }
 
-    //BUSCA - ID
-    public Cliente buscarClientePorId(Integer id) {
-        return repository.findById(id)
+    public ClienteDTO buscarClientePorId(Integer id) {
+        Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente com ID " + id + " não encontrado"));
+        return toDTO(cliente);
     }
 
-    //BUSCA nome
-    public Cliente buscarClientePorNome(String nome) {
-        return repository.findByNome(nome).orElseThrow(
-                () -> new RuntimeException("Não encontrado")
-        );
-    }
+
 
     // ========== DELETE ==========
 
     public void deletarClientePorCnpj(String cnpj){
-        repository.deleteByCnpj(cnpj);
+        Cliente cliente = clienteRepository.findByCnpj(cnpj)
+                .orElseThrow(() -> new RuntimeException("CNPJ não encontrado"));
+        clienteRepository.deleteByCnpj(cliente.getCnpj());
     }
 
     public void deletarClientePorId(Integer id) {
-        if (!repository.existsById(id)) {
+        if (!clienteRepository.existsById(id)) {
             throw new RuntimeException("ID não encontrado");
         }
-        repository.deleteById(id);
+        clienteRepository.deleteById(id);
     }
 
     public void deletarClientePorNome(String nome) {
-        Cliente cliente = repository.findByNome(nome)
+        Cliente cliente = clienteRepository.findByNome(nome)
                 .orElseThrow(() -> new RuntimeException("Nome não encontrado"));
-        repository.deleteById(cliente.getId());
+        clienteRepository.deleteById(cliente.getId());
     }
 
 
     // ========== ATUALIZAR ==========
 
     public void atualizarClientePorId(Integer id, Cliente cliente){
-        Cliente clienteEntity = repository.findById(id).orElseThrow(() ->
+        Cliente clienteEntity = clienteRepository.findById(id).orElseThrow(() ->
                 new RuntimeException("Cliente não encontrado"));
 
         Cliente clienteAtualizado = Cliente.builder()
@@ -80,12 +98,12 @@ public class ClienteService {
                 .id(clienteEntity.getId())
                 .build();
 
-        repository.saveAndFlush(clienteAtualizado);
+        clienteRepository.saveAndFlush(clienteAtualizado);
     }
 
     public void atualizarClientePorNome(String nome, Cliente cliente) {
-        Cliente clienteEntity = repository.findByNome(nome)
-                .orElseThrow(() -> new RuntimeException("Cliente com ID não encontrado"));
+        Cliente clienteEntity = clienteRepository.findByNome(nome)
+                .orElseThrow(() -> new RuntimeException("ID de Cliente não encontrado"));
 
         Cliente clienteAtualizado = Cliente.builder()
                 .id(clienteEntity.getId())
@@ -93,11 +111,11 @@ public class ClienteService {
                 .cnpj(cliente.getCnpj() != null ? cliente.getCnpj() : clienteEntity.getCnpj())
                 .build();
 
-        repository.saveAndFlush(clienteAtualizado);
+        clienteRepository.saveAndFlush(clienteAtualizado);
     }
 
     public void atualizarClientePorCnpj(String cnpj, Cliente cliente) {
-        Cliente clienteEntity = repository.findByCnpj(cnpj)
+        Cliente clienteEntity = clienteRepository.findByCnpj(cnpj)
                 .orElseThrow(() -> new RuntimeException("Cliente com CNPJ não encontrado"));
 
         Cliente clienteAtualizado = Cliente.builder()
@@ -106,7 +124,7 @@ public class ClienteService {
                 .cnpj(cliente.getCnpj() != null ? cliente.getCnpj() : clienteEntity.getCnpj())
                 .build();
 
-        repository.saveAndFlush(clienteAtualizado);
+        clienteRepository.saveAndFlush(clienteAtualizado);
     }
 
 }

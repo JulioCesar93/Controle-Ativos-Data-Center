@@ -69,6 +69,7 @@ public class EquipamentoController {
     public ResponseEntity<Void> atualizarEquipamentoPorId(@RequestParam Integer id,
                                                       @RequestBody Equipamento equipamento) {
         equipamentoService.atualizarEquipamentoPorId(id, equipamento);
+
         return ResponseEntity.ok().build();
     }
 

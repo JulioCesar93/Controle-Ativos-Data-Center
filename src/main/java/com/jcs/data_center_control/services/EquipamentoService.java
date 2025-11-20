@@ -108,10 +108,44 @@ public class EquipamentoService {
 
     // ========== ATUALIZAÇÕES ==========================
 
+    // Centralizado para atualizar cliente
+    private void atualizarClienteDoEquipamento(Equipamento equipamentoEntity, Equipamento equipamentoPayload) {
+
+        if (equipamentoPayload.getCliente() == null) {
+            return; // nenhuma atualização de cliente enviada
+        }
+        Cliente clienteAtualizado = null;
+
+        // Payload 1º
+        if (equipamentoPayload.getCliente().getId() != null) {
+            clienteAtualizado = clienteRepository.findById(equipamentoPayload.getCliente().getId())
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Cliente não encontrado com ID " + equipamentoPayload.getCliente().getId()
+                    ));
+        }
+
+        // Payload 2º
+        else if (equipamentoPayload.getCliente().getNome() != null) {
+            clienteAtualizado = clienteRepository.findByNome(equipamentoPayload.getCliente().getNome())
+                    .orElseThrow(() -> new ResourceNotFoundException(
+                            "Cliente não encontrado com nome " + equipamentoPayload.getCliente().getNome()
+                    ));
+        }
+
+        // Se retornar "null", não atualizar cliente
+        if (clienteAtualizado == null) {
+            return;
+        }
+
+        equipamentoEntity.setCliente(clienteAtualizado);
+        equipamentoEntity.setClienteNome(clienteAtualizado.getNome()); // banco
+    }
+
     public void atualizarEquipamentoPorId(Integer id, Equipamento equipamento) {
         Equipamento equipamentoEntity = equipamentoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Equipamento não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Equipamento não encontrado com ID " + id));
 
+        // atualizações parciais
         equipamentoEntity.setSerialTag(equipamento.getSerialTag() != null ? equipamento.getSerialTag() : equipamentoEntity.getSerialTag());
         equipamentoEntity.setHostname(equipamento.getHostname() != null ? equipamento.getHostname() : equipamentoEntity.getHostname());
         equipamentoEntity.setIpProducao(equipamento.getIpProducao() != null ? equipamento.getIpProducao() : equipamentoEntity.getIpProducao());
@@ -128,16 +162,12 @@ public class EquipamentoService {
         equipamentoEntity.setDataInicioGarantia(equipamento.getDataInicioGarantia() != null ? equipamento.getDataInicioGarantia() : equipamentoEntity.getDataInicioGarantia());
         equipamentoEntity.setDataFimGarantia(equipamento.getDataFimGarantia() != null ? equipamento.getDataFimGarantia() : equipamentoEntity.getDataFimGarantia());
         equipamentoEntity.setObservacoes(equipamento.getObservacoes() != null ? equipamento.getObservacoes() : equipamentoEntity.getObservacoes());
+        atualizarClienteDoEquipamento(equipamentoEntity, equipamento); // 20/11
 
-        // Se o JSON trouxer cliente
-        if (equipamento.getCliente() != null && equipamento.getCliente().getId() != null) {
-            Cliente cliente = clienteRepository.findById(equipamento.getCliente().getId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
-            equipamentoEntity.setCliente(cliente);
-        }
-
+        atualizarClienteDoEquipamento(equipamentoEntity, equipamento);
         equipamentoRepository.saveAndFlush(equipamentoEntity);
     }
+
 
     public void atualizarEquipamentoPorSerialTag(String serialTag, Equipamento equipamento) {
         Equipamento equipamentoEntity = equipamentoRepository.findBySerialTag(serialTag)
@@ -160,6 +190,7 @@ public class EquipamentoService {
         equipamentoEntity.setDataFimGarantia(equipamento.getDataFimGarantia() != null ? equipamento.getDataFimGarantia() : equipamentoEntity.getDataFimGarantia());
         equipamentoEntity.setObservacoes(equipamento.getObservacoes() != null ? equipamento.getObservacoes() : equipamentoEntity.getObservacoes());
 
+        atualizarClienteDoEquipamento(equipamentoEntity, equipamento);
         equipamentoRepository.saveAndFlush(equipamentoEntity);
     }
 
@@ -184,6 +215,23 @@ public class EquipamentoService {
         entidade.setDataFimGarantia(equipamento.getDataFimGarantia() != null ? equipamento.getDataFimGarantia() : entidade.getDataFimGarantia());
         entidade.setObservacoes(equipamento.getObservacoes() != null ? equipamento.getObservacoes() : entidade.getObservacoes());
 
+        atualizarClienteDoEquipamento(entidade, equipamento);
+        equipamentoRepository.saveAndFlush(entidade);
+
+        if (equipamento.getCliente() == null) {
+            // Remover vínculo
+            entidade.setCliente(null);
+            entidade.setClienteNome(null);
+        }
+        else if (equipamento.getCliente().getId() != null) {
+            Cliente cliente = clienteRepository.findById(equipamento.getCliente().getId())
+                    .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+
+            entidade.setCliente(cliente);
+            entidade.setClienteNome(cliente.getNome());
+        }
+
         equipamentoRepository.saveAndFlush(entidade);
     }
 }
+

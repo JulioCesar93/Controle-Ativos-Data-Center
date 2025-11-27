@@ -33,6 +33,9 @@ public class EquipamentoDTO {
     @JsonBackReference
     private ClienteDTO cliente;
 
+    @JsonBackReference
+    private EquipamentoDTO equipamento;
+
     public EquipamentoDTO() {
     }
 }

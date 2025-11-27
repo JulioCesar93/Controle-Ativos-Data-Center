@@ -20,7 +20,7 @@ public enum StatusLocal {
         this.descricao = descricao;
     }
 
-    public static StatusLocal toEnum(Integer cod) {
+    public static StatusLocal toEnum (Integer cod) {
         if (cod == null) {
             return null;
         }

@@ -17,32 +17,34 @@ public class Localizacao implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    @Column(name = "ordemLoc", unique = true, nullable = false)
+    private Integer ordemLoc;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    //EQUIPAMENTO -------------------------------------
+    @OneToOne
     @JoinColumn(name = "equipamento_id")
     private Equipamento equipamento;
 
-    @Enumerated(EnumType.STRING)
-    private DataCenter dataCenter;
+    //-------------------------
+    @Column(name = "dataCenter")
+    private String dataCenter;
 
-    @Enumerated(EnumType.STRING)
-    private LocalEquipamento local;
+    @Column(name = "local")
+    private String local;
 
-    @Enumerated(EnumType.STRING)
-    private Sala sala;
+    @Column(name = "sala")
+    private String sala;
 
-    @Enumerated(EnumType.STRING)
-    private Fila fila;
+    @Column(name = "fila")
+    private Integer fila;
 
-    @Enumerated(EnumType.STRING)
-    private Bastidor bastidor;
+    @Column(name = "bastidor")
+    private Integer bastidor;
 
-    @Enumerated(EnumType.STRING)
-    private Nivel nivel;
+    @Column(name = "nivel")
+    private Integer nivel;
 
-    @Enumerated(EnumType.STRING)
-    private StatusLocal statusLocal;
+    @Column(name = "statusLocal")
+    private String statusLocal;
 
-}
+    }

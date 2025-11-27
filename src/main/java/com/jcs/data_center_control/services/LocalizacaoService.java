@@ -1,47 +1,68 @@
 package com.jcs.data_center_control.services;
 
+import com.jcs.data_center_control.entity.Equipamento;
 import com.jcs.data_center_control.entity.Localizacao;
-import com.jcs.data_center_control.entity.Localizacao;
+import com.jcs.data_center_control.repositories.EquipamentoRepository;
 import com.jcs.data_center_control.repositories.LocalizacaoRepository;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class LocalizacaoService {
 
-    private final LocalizacaoRepository repository;
+    private final LocalizacaoRepository localizacaoRepository;
+    private final EquipamentoRepository equipamentoRepository;
 
-    public LocalizacaoService(LocalizacaoRepository repository) {
-        this.repository = repository;
+    public Localizacao criar(Localizacao localizacao) {
+        return localizacaoRepository.save(localizacao);
     }
 
-    public void salvarLocalizacao(Localizacao localizacao){
-        repository.saveAndFlush(localizacao);
+    public Localizacao buscarPorOrdemLoc(Integer ordemLoc) {
+        return localizacaoRepository.findByOrdemLoc(ordemLoc)
+                .orElseThrow(() -> new EntityNotFoundException("Localização não encontrada."));
     }
 
-    public Localizacao buscarLocalizacaoPorId(Long id){
-        return repository.findById(Math.toIntExact(id)).orElseThrow(
-                () -> new RuntimeException("Localizacao não encontrada")
-        );
+    public Localizacao buscarPorSerialTag(String serialTag) {
+
+        Equipamento equipamento = equipamentoRepository.findBySerialTag(serialTag)
+                .orElseThrow(() -> new EntityNotFoundException("Equipamento não encontrado pelo serialTag: " + serialTag));
+
+        return localizacaoRepository.findByEquipamento(equipamento)
+                .orElseThrow(() -> new EntityNotFoundException("Localização não encontrada para este equipamento."));
     }
 
-    public void deletarLocalizacaoPorId(Long id){
-        repository.deleteById(Math.toIntExact(id));
+    public Localizacao atualizar(Integer ordemLoc, Localizacao newLocalizacao) {
+
+        Localizacao existente = buscarPorOrdemLoc(ordemLoc);
+
+        existente.setDataCenter(newLocalizacao.getDataCenter());
+        existente.setLocal(newLocalizacao.getLocal());
+        existente.setSala(newLocalizacao.getSala());
+        existente.setFila(newLocalizacao.getFila());
+        existente.setBastidor(newLocalizacao.getBastidor());
+        existente.setNivel(newLocalizacao.getNivel());
+        existente.setStatusLocal(newLocalizacao.getStatusLocal());
+
+        return localizacaoRepository.save(existente);
     }
 
-    public void atualizarLocalizacaoPorId(Integer id, Localizacao localizacao){
-        Localizacao localizacaoEntity = repository.findById(id).orElseThrow(() ->
-                new RuntimeException("Localizacao não encontrado"));
+    public void remover(Integer ordemLoc) {
+        localizacaoRepository.deleteById(ordemLoc);
+    }
 
-        Localizacao localizacaoAtualizada = Localizacao.builder()
-                .id(localizacao.getId() != null ? localizacao.getId() :
-                        localizacaoEntity.getId())
-                .fila(localizacao.getFila() != null ? localizacao.getFila() :
-                        localizacaoEntity.getFila())
-                .bastidor(localizacao.getBastidor() != null ? localizacao.getBastidor() :
-                        localizacaoEntity.getBastidor())
-                .id(localizacaoEntity.getId())
-                .build();
+    public Localizacao alocarEquipamento(Integer ordemLoc, String serialTag) {
 
-        repository.saveAndFlush(localizacaoAtualizada);
+        Localizacao localizacao = buscarPorOrdemLoc(ordemLoc);
+
+        Equipamento equipamento = equipamentoRepository.findBySerialTag(serialTag)
+                .orElseThrow(() -> new EntityNotFoundException("Equipamento não encontrado."));
+
+        localizacao.setEquipamento(equipamento);
+        equipamento.setLocalizacao(localizacao);
+
+        equipamentoRepository.save(equipamento);
+        return localizacaoRepository.save(localizacao);
     }
 }

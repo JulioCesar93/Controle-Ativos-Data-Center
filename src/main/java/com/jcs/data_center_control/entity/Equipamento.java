@@ -1,11 +1,8 @@
 package com.jcs.data_center_control.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.jcs.data_center_control.enums.StatusEquipamento;
-import com.jcs.data_center_control.enums.TipoServico;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -27,6 +24,11 @@ public class Equipamento implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    //LOCALIZAÇÃO
+    @OneToOne(mappedBy = "equipamento", fetch = FetchType.LAZY)
+    private Localizacao localizacao;
+
+    //CLIENTE -------------------------------------
     @Column(name = "cliente_nome")
     private String clienteNome;
 
@@ -60,13 +62,13 @@ public class Equipamento implements Serializable {
     private String hd;
     private Integer nucleos;
 
-    @Enumerated(EnumType.STRING)
+    //@Enumerated(EnumType.STRING)
     @Column(name = "tipo_servico", length = 50)
-    private TipoServico tipoServico;
+    private String tipoServico;
 
-    @Enumerated(EnumType.STRING)
+    //@Enumerated(EnumType.STRING)
     @Column(name = "status_equipamento", length = 50)
-    private StatusEquipamento statusEquipamento;
+    private String statusEquipamento;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "data_ativacao")

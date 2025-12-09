@@ -33,6 +33,7 @@ public class LocalizacaoService {
                 .orElseThrow(() -> new EntityNotFoundException("Localização não encontrada para este equipamento."));
     }
 
+
     public Localizacao atualizar(Integer ordemLoc, Localizacao newLocalizacao) {
 
         Localizacao existente = buscarPorOrdemLoc(ordemLoc);

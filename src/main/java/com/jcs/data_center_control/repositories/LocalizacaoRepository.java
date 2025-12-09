@@ -10,5 +10,11 @@ public interface LocalizacaoRepository extends JpaRepository<Localizacao, Intege
 
     Optional<Localizacao> findByOrdemLoc(Integer ordemLoc);
     Optional<Localizacao> findByEquipamento(Equipamento equipamento);
-}
 
+    // Identificador
+    //Optional<Equipamento> findBySerialTag(String serialTag);
+    //Optional<Equipamento> findByHostname(String hostname);
+
+
+
+}

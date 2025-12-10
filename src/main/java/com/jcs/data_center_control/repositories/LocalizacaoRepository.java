@@ -6,15 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface LocalizacaoRepository extends JpaRepository<Localizacao, Integer> {
+public interface LocalizacaoRepository extends JpaRepository<Localizacao, String> {
 
-    Optional<Localizacao> findByOrdemLoc(Integer ordemLoc);
+    Optional<Localizacao> findByOrdemLoc(String ordemLoc);
     Optional<Localizacao> findByEquipamento(Equipamento equipamento);
-
-    // Identificador
-    //Optional<Equipamento> findBySerialTag(String serialTag);
-    //Optional<Equipamento> findByHostname(String hostname);
-
-
 
 }

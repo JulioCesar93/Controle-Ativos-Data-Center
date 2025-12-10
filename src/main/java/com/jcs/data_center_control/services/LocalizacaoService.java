@@ -19,7 +19,7 @@ public class LocalizacaoService {
         return localizacaoRepository.save(localizacao);
     }
 
-    public Localizacao buscarPorOrdemLoc(Integer ordemLoc) {
+    public Localizacao buscarPorOrdemLoc(String ordemLoc) {
         return localizacaoRepository.findByOrdemLoc(ordemLoc)
                 .orElseThrow(() -> new EntityNotFoundException("Localização não encontrada."));
     }
@@ -34,7 +34,7 @@ public class LocalizacaoService {
     }
 
 
-    public Localizacao atualizar(Integer ordemLoc, Localizacao newLocalizacao) {
+    public Localizacao atualizar(String ordemLoc, Localizacao newLocalizacao) {
 
         Localizacao existente = buscarPorOrdemLoc(ordemLoc);
 
@@ -49,11 +49,12 @@ public class LocalizacaoService {
         return localizacaoRepository.save(existente);
     }
 
-    public void remover(Integer ordemLoc) {
+    public void remover(String ordemLoc) {
         localizacaoRepository.deleteById(ordemLoc);
+
     }
 
-    public Localizacao alocarEquipamento(Integer ordemLoc, String serialTag) {
+    public Localizacao alocarEquipamento(String ordemLoc, String serialTag) {
 
         Localizacao localizacao = buscarPorOrdemLoc(ordemLoc);
 

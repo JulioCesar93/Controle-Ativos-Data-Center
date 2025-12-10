@@ -20,7 +20,7 @@ public class LocalizacaoController {
     }
 
     @GetMapping("/{ordemLoc}")
-    public ResponseEntity<Localizacao> buscarPorOrdemLoc(@PathVariable Integer ordemLoc) {
+    public ResponseEntity<Localizacao> buscarPorOrdemLoc(@PathVariable String ordemLoc) {
         return ResponseEntity.ok(localizacaoService.buscarPorOrdemLoc(ordemLoc));
     }
 
@@ -31,14 +31,14 @@ public class LocalizacaoController {
 
     @PutMapping("/{ordemLoc}")
     public ResponseEntity<Localizacao> atualizar(
-            @PathVariable Integer ordemLoc,
+            @PathVariable String ordemLoc,
             @RequestBody Localizacao localizacao) {
 
         return ResponseEntity.ok(localizacaoService.atualizar(ordemLoc, localizacao));
     }
 
     @DeleteMapping("/{ordemLoc}")
-    public ResponseEntity<Void> remover(@PathVariable Integer ordemLoc) {
+    public ResponseEntity<Void> remover(@PathVariable String ordemLoc) {
         localizacaoService.remover(ordemLoc);
         return ResponseEntity.noContent().build();
     }
@@ -46,7 +46,7 @@ public class LocalizacaoController {
     // Alocar equipamento por ordemLoc e serialTag
     @PutMapping("/{ordemLoc}/alocar/{serialTag}")
     public ResponseEntity<Localizacao> alocar(
-            @PathVariable Integer ordemLoc,
+            @PathVariable String ordemLoc,
             @PathVariable String serialTag) {
 
         return ResponseEntity.ok(localizacaoService.alocarEquipamento(ordemLoc, serialTag));

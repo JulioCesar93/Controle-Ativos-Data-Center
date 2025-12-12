@@ -54,16 +54,31 @@ public class LocalizacaoService {
 
     }
 
-    public Localizacao alocarEquipamento(String ordemLoc, String serialTag) {
+    public Localizacao alocarEquipamento(String ordemLoc, String serialOuHostname) {
 
-        Localizacao localizacao = buscarPorOrdemLoc(ordemLoc);
+        // 1-Buscar localização
+        Localizacao localizacao = localizacaoRepository.findByOrdemLoc(ordemLoc)
+                .orElseThrow(() -> new EntityNotFoundException("Localização não encontrada."));
 
-        Equipamento equipamento = equipamentoRepository.findBySerialTag(serialTag)
+        // 2-Verificar se está ocupada
+        if (localizacao.getEquipamento() != null) {
+            throw new IllegalStateException("Localização já está ocupada.");
+        }
+
+        // 3-Buscar equipamento (por hostname ou serialTag)
+        Equipamento equipamento = equipamentoRepository.findByHostnameOrSerialTag(serialOuHostname)
                 .orElseThrow(() -> new EntityNotFoundException("Equipamento não encontrado."));
 
-        localizacao.setEquipamento(equipamento);
-        equipamento.setLocalizacao(localizacao);
+        // 4-Verificar se já possui outra localização
+        if (equipamento.getLocalizacao() != null) {
+            throw new IllegalStateException("Equipamento já está alocado em outra localização.");
+        }
 
+        // 5-Vincular ambos
+        equipamento.setLocalizacao(localizacao);
+        localizacao.setEquipamento(equipamento);
+
+        // 6-Salvar alterações
         equipamentoRepository.save(equipamento);
         return localizacaoRepository.save(localizacao);
     }

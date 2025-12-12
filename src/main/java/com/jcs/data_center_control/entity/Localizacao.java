@@ -48,39 +48,4 @@ public class Localizacao implements Serializable {
     @Column(name = "statusLocal")
     private String statusLocal;
 
-    public void setOrdemLoc(String ordemLoc) {
-        this.ordemLoc = ordemLoc;
-    }
-
-    public void setEquipamento(Equipamento equipamento) {
-        this.equipamento = equipamento;
-    }
-
-    public void setDataCenter(String dataCenter) {
-        this.dataCenter = dataCenter;
-    }
-
-    public void setLocal(String local) {
-        this.local = local;
-    }
-
-    public void setSala(String sala) {
-        this.sala = sala;
-    }
-
-    public void setFila(Integer fila) {
-        this.fila = fila;
-    }
-
-    public void setBastidor(Integer bastidor) {
-        this.bastidor = bastidor;
-    }
-
-    public void setNivel(Integer nivel) {
-        this.nivel = nivel;
-    }
-
-    public void setStatusLocal(String statusLocal) {
-        this.statusLocal = statusLocal;
-    }
 }

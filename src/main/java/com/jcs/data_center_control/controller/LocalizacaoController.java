@@ -1,5 +1,6 @@
 package com.jcs.data_center_control.controller;
 
+import com.jcs.data_center_control.DTO.LocalizacaoDTO;
 import com.jcs.data_center_control.entity.Localizacao;
 
 import com.jcs.data_center_control.services.LocalizacaoService;
@@ -43,13 +44,14 @@ public class LocalizacaoController {
         return ResponseEntity.noContent().build();
     }
 
-    // Alocar equipamento por ordemLoc e serialTag
-    @PutMapping("/{ordemLoc}/alocar/{serialTag}")
+    @PutMapping("/{ordemLoc}/alocar/{serialOuHostname}")
     public ResponseEntity<Localizacao> alocar(
             @PathVariable String ordemLoc,
-            @PathVariable String serialTag) {
+            @PathVariable String serialOuHostname) {
 
-        return ResponseEntity.ok(localizacaoService.alocarEquipamento(ordemLoc, serialTag));
+        Localizacao localizacao = localizacaoService.alocarEquipamento(ordemLoc, serialOuHostname);
+        return ResponseEntity.ok(localizacao);
     }
 }
+
 
